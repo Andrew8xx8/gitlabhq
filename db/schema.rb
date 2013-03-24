@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(:version => 20130410175022) do
     t.string   "file_name"
     t.datetime "expires_at"
     t.boolean  "private"
+    t.string   "type"
   end
 
   add_index "snippets", ["created_at"], :name => "index_snippets_on_created_at"
