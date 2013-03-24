@@ -212,6 +212,13 @@ FactoryGirl.define do
     file_name
   end
 
+  factory :personal_snippet do
+    author
+    title
+    content
+    file_name
+  end
+
   factory :snippet do
     author
     title
