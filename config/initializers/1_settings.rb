@@ -73,6 +73,7 @@ Settings.gravatar['ssl_url']    ||= 'https://secure.gravatar.com/avatar/%{hash}?
 # GitLab Shell
 #
 Settings['gitlab_shell'] ||= Settingslogic.new({})
+Settings.gitlab_shell['snippets_path']   ||= '/home/git/snippets/'
 Settings.gitlab_shell['hooks_path']   ||= '/home/git/gitlab-shell/hooks/'
 Settings.gitlab_shell['receive_pack']   = true if Settings.gitlab_shell['receive_pack'].nil?
 Settings.gitlab_shell['upload_pack']    = true if Settings.gitlab_shell['upload_pack'].nil?
