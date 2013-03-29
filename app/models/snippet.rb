@@ -45,6 +45,10 @@ class Snippet < ActiveRecord::Base
     ]
   end
 
+  def path
+    "#{Gitlab.config.gitlab_shell.snippets_path}#{id}.git"
+  end
+
   def data
     content
   end
