@@ -4,8 +4,9 @@ describe 'Gitlab::SnippetRepo' do
   let (:filename) { 'snippet_' + Time.now.to_i.to_s + rand(300).to_s.rjust(3, '0') }
   let (:snippet_repo) { Gitlab::SnippetRepo.new(snippet_path) }
   let (:snippet_path) do 
-    path = Rails.root.join('tmp', 'test_snippets', filename).to_s 
+    path = Rails.root.join(Gitlab.config.gitlab_shell.snipepts_path, 'test_snippets', filename).to_s 
     FileUtils.mkdir_p path unless Dir.exists? path
+
     path
   end
 
@@ -30,6 +31,14 @@ describe 'Gitlab::SnippetRepo' do
 
   it "should initialize snippet repository by path" do
     snippet_repo.repo.should be_a_kind_of(Grit::Repo)
+  end
+
+  it "destroy snippet repository" do
+    path = snippet_repo.path
+
+    snippet_repo.destroy
+
+    Dir.exists?(path).should be_false
   end
 
   it "should add the file to the snippet repository" do

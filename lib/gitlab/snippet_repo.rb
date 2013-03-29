@@ -38,12 +38,17 @@ module Gitlab
       end
     end
 
+    def destroy
+      FileUtils.rm_rf @path
+      @path = nil
+    end
+
+    protected
+
     def change_author(name, email)
       @repo.git.config({}, "user.name", name)
       @repo.git.config({}, "user.email", email)
     end
-
-    protected
 
     def init_repo(path)
       @repo = Grit::Repo.new path
