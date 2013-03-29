@@ -15,6 +15,8 @@
 #  private    :boolean
 
 class ProjectSnippet < Snippet
+  attr_accessible :project_id
+
   belongs_to :project
   belongs_to :author, class_name: "User"
 
