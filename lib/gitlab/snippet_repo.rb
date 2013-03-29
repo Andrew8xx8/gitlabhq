@@ -1,13 +1,16 @@
 module Gitlab
+  class CannotCreateSnippetRepo < StandardError
+  end
+
   class SnippetRepo
     attr_reader :path, :repo
 
-    def initialize(path)
+    def initialize(path, name = nil, email = nil)
       @path = path
 
-      @repo = Grit::Repo.new path
-    rescue Grit::InvalidGitRepositoryError, Grit::NoSuchPathError
-      @repo = Grit::Repo.init path
+      init_repo path
+
+      change_author(name, email) if name.present? && email.present?
     end
 
     def add_file(filename, content)
@@ -33,6 +36,19 @@ module Gitlab
         @repo.remove(filename)
         @repo.commit_index("Deleted #{filename}")
       end
+    end
+
+    def change_author(name, email)
+      @repo.git.config({}, "user.name", name)
+      @repo.git.config({}, "user.email", email)
+    end
+
+    protected
+
+    def init_repo(path)
+      @repo = Grit::Repo.new path
+    rescue Grit::InvalidGitRepositoryError, Grit::NoSuchPathError
+      @repo = Grit::Repo.init path
     end
   end
 end

@@ -15,6 +15,19 @@ describe 'Gitlab::SnippetRepo' do
     new_snippet_repo.repo.should be_a_kind_of(Grit::Repo)
   end
 
+  it "should create new snippet repository by path with author" do
+    new_snippet_repo = Gitlab::SnippetRepo.new(snippet_path, "user", "user@user.user")
+
+    FileUtils.touch File.join(snippet_repo.path, filename)
+
+    snippet_repo.add_file filename, 'test content'
+
+    snippet_repo.repo.log.first.author.name.should  eq "user"
+    snippet_repo.repo.log.first.author.email.should eq "user@user.user"
+    snippet_repo.repo.log.first.committer.name.should  eq "user"
+    snippet_repo.repo.log.first.committer.email.should eq "user@user.user"
+  end
+
   it "should initialize snippet repository by path" do
     snippet_repo.repo.should be_a_kind_of(Grit::Repo)
   end
